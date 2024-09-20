@@ -1,13 +1,11 @@
 'use client';
 
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect, useId, useRef } from 'react';
 import { Box } from 'styled-system/jsx';
 import { BreakpointToken, token } from 'styled-system/tokens';
 
-import * as React from 'react';
-
 const useIsFirstRender = (): boolean => {
-  const isFirst = React.useRef(true);
+  const isFirst = useRef(true);
 
   if (isFirst.current) {
     isFirst.current = false;
@@ -18,11 +16,11 @@ const useIsFirstRender = (): boolean => {
   }
 };
 
-export const SkipRenderOnClient: React.FC<{
+const SkipRenderOnClient: React.FC<{
   children: React.ReactNode;
   shouldRenderOnClient: () => boolean;
 }> = ({ children, shouldRenderOnClient }) => {
-  const id = React.useId();
+  const id = useId();
   const isClient = typeof window !== 'undefined';
   const isFirstRender = useIsFirstRender();
 
@@ -38,10 +36,32 @@ export const SkipRenderOnClient: React.FC<{
   return <div id={id}>{shouldRender && children}</div>;
 };
 
-const extractFromBreakpointToken = (breakpoint: BreakpointToken) => {
-  return Number(token(`breakpoints.${breakpoint}`).replace('px', ''));
-};
+const extractFromBreakpointToken = (breakpoint: BreakpointToken) =>
+  Number(token(`breakpoints.${breakpoint}`).replace('px', ''));
 
+const refreshOnResizeCallback =
+  ({
+    initialInnerWidth,
+    breakpoint,
+    isClient,
+  }: {
+    initialInnerWidth: number;
+    breakpoint: number;
+    isClient: boolean;
+  }) =>
+  () => {
+    const actualInnerWidth = isClient ? window.innerWidth : 0;
+    const shouldReload =
+      isClient &&
+      ((initialInnerWidth < actualInnerWidth &&
+        breakpoint < actualInnerWidth) ||
+        (initialInnerWidth > actualInnerWidth &&
+          breakpoint > actualInnerWidth));
+
+    if (shouldReload) {
+      window.location.reload();
+    }
+  };
 interface BreakpointProps {
   breakpoint?: BreakpointToken;
   mobileChildren: ReactNode;
@@ -53,23 +73,41 @@ export const Breakpoint: FC<BreakpointProps> = ({
   mobileChildren,
   desktopChildren,
 }) => {
+  const isClient = typeof window !== 'undefined';
+  const initialInnerWidth = useRef(isClient ? window.innerWidth : 0);
+  const breakpointNumber = extractFromBreakpointToken(breakpoint);
+
+  const refreshOnResize = refreshOnResizeCallback({
+    initialInnerWidth: initialInnerWidth.current,
+    breakpoint: breakpointNumber,
+    isClient,
+  });
+
+  useEffect(() => {
+    if (isClient) {
+      window.addEventListener('resize', refreshOnResize);
+
+      return () => {
+        window.removeEventListener('resize', refreshOnResize);
+      };
+    }
+  }, []);
+
+  const shouldRenderOnClientMobile = () =>
+    window.innerWidth <= breakpointNumber;
+
+  const shouldRenderOnClientDesktop = () =>
+    window.innerWidth > breakpointNumber;
+
   return (
     <>
-      <SkipRenderOnClient
-        shouldRenderOnClient={() =>
-          window.innerWidth <= extractFromBreakpointToken(breakpoint)
-        }
-      >
+      <SkipRenderOnClient shouldRenderOnClient={shouldRenderOnClientMobile}>
         <Box display={'block'} hideFrom={breakpoint}>
           {mobileChildren}
         </Box>
       </SkipRenderOnClient>
-      <SkipRenderOnClient
-        shouldRenderOnClient={() =>
-          window.innerWidth > extractFromBreakpointToken(breakpoint)
-        }
-      >
-        <Box display={'flex'} hideBelow={breakpoint}>
+      <SkipRenderOnClient shouldRenderOnClient={shouldRenderOnClientDesktop}>
+        <Box display={'block'} hideBelow={breakpoint}>
           {desktopChildren}
         </Box>
       </SkipRenderOnClient>
