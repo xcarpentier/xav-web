@@ -17,9 +17,9 @@ export default defineConfig({
   jsxFramework: 'react',
   globalCss: {
     body: {
-      backgroundColor: 'blueprint',
+      backgroundColor: 'blueprintAlpha',
       backgroundImage:
-        'linear-gradient(rgba(255,255,255,0.1) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,0.1) 2px, transparent 1px),linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)',
+        'var(--gradients-line-horizontal), var(--gradients-line-vertical), var(--gradients-dot-horizontal), var(--gradients-dot-vertical)',
       backgroundSize: '100px 100px, 100px 100px, 20px 20px, 20px 20px',
       backgroundPosition: '-2px -2px, -2px -2px, -1px -1px, -1px -1px',
     },
@@ -36,13 +36,49 @@ export default defineConfig({
             },
           },
         },
+        gradients: {
+          lineHorizontal: {
+            value:
+              'linear-gradient(var(--colors-blueprint-line1) 2px, transparent 2px)',
+          },
+          lineVertical: {
+            value:
+              'linear-gradient(90deg, var(--colors-blueprint-line1) 2px, transparent 1px)',
+          },
+          dotHorizontal: {
+            value:
+              'linear-gradient(var(--colors-blueprint-line2) 1px, transparent 1px)',
+          },
+          dotVertical: {
+            value:
+              'linear-gradient(90deg, var(--colors-blueprint-line2) 1px, transparent 1px)',
+          },
+        },
       },
       semanticTokens: {
         colors: {
+          blueprintAlpha: {
+            value: {
+              _light: '{colors.red.light.2}',
+              _dark: '#0066ccbb',
+            },
+          },
           blueprint: {
             value: {
-              _light: '#0066ccbb',
-              _dark: '{colors.blue.a7}',
+              _light: '{colors.red.2}',
+              _dark: '{colors.blue.7}',
+            },
+          },
+          blueprintLine1: {
+            value: {
+              _light: '{colors.blue.a2}',
+              _dark: 'rgba(255, 255, 255, 0.1)',
+            },
+          },
+          blueprintLine2: {
+            value: {
+              _light: '{colors.blue.a1}',
+              _dark: 'rgba(255, 255, 255, 0.05)',
             },
           },
         },

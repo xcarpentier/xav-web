@@ -10,7 +10,7 @@ export const NavLinks: FC = () => {
   const pathname = usePathname();
 
   return (
-    <HStack>
+    <HStack w={'md'} justify={'space-around'}>
       <Link data-active={pathname === '/' || undefined} asChild>
         <NextLink href="/">Home</NextLink>
       </Link>

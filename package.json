@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "prepare": "panda codegen",
-    "dev": "rm -rf .next && next dev",
+    "dev": "rm -rf .next && next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -14,10 +14,10 @@
     "@icons-pack/react-simple-icons": "^10.0.0",
     "@uidotdev/usehooks": "^2.4.1",
     "lucide-react": "^0.441.0",
-    "next": "14.2.11",
+    "next": "15.0.1",
     "next-themes": "^0.3.0",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "19.0.0-rc-69d4b800-20241021",
+    "react-dom": "19.0.0-rc-69d4b800-20241021",
     "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
@@ -25,10 +25,16 @@
     "@pandacss/studio": "^0.46.1",
     "@park-ui/panda-preset": "^0.42.0",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.11",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "eslint": "9.13.0",
+    "eslint-config-next": "15.0.1",
     "typescript": "^5"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "npm:types-react@19.0.0-rc.1",
+      "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    }
   }
 }

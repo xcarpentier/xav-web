@@ -63,17 +63,22 @@ const careerHistory = [
 
 export default async function Projets() {
   return (
-    <VStack mb={'5'} pb={'5'} maxW={{ base: 'lg', md: 'xl' }} mt={'16'}>
+    <VStack
+      mb={'5'}
+      pb={'5'}
+      maxW={{ base: 'lg', md: '2xl' }}
+      mt={{ base: '10', md: '16' }}
+    >
       <Heading
         as="h1"
-        fontSize={{ base: 'xl', md: '4xl' }}
-        h={'32'}
+        fontSize={{ base: '3xl', md: '4xl' }}
+        h={{ base: '16', md: '32' }}
         textAlign={'center'}
       >
         {'My Professional Journey'}
       </Heading>
 
-      <Box padding="4" maxW="800px" mx="auto">
+      <Box padding="4" mx="auto">
         <VStack gap="8" alignItems="flex-start">
           <Box>
             <Heading as="h2" fontSize="2xl" color="teal.500" mb="4">
@@ -81,7 +86,7 @@ export default async function Projets() {
             </Heading>
 
             {careerHistory.map((history) => (
-              <Box key={history.company} mt="4">
+              <Box key={history.company} mt="5">
                 <Heading as="h3" fontSize="xl">
                   {history.company}
                 </Heading>
@@ -94,7 +99,7 @@ export default async function Projets() {
                   {history.period}
                 </Text>
 
-                <Text>{history.description}</Text>
+                <Text textAlign="justify">{history.description}</Text>
               </Box>
             ))}
           </Box>

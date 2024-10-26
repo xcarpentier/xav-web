@@ -13,7 +13,7 @@ export const NavTools: FC = () => {
     <HStack>
       <ColorModeButton />
       <GitHubLink />
-      <Button>
+      <Button variant={'subtle'}>
         <NextLink href="/contact">Contact</NextLink>
         <Send />
       </Button>

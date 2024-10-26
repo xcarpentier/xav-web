@@ -10,7 +10,7 @@ export default async function Home() {
     <VStack mb={'5'} pb={'5'} maxW={{ base: 'lg', md: 'xl' }} mt={'16'}>
       <Heading
         as="h1"
-        fontSize={{ base: 'xl', md: '4xl' }}
+        fontSize={{ base: '2xl', md: '4xl' }}
         h={'32'}
         textAlign={'center'}
       >
@@ -22,7 +22,7 @@ export default async function Home() {
         mobile development. All this with great quality, drawing on my 10 years
         of experience.
       </Text>
-      <Button>
+      <Button variant={'subtle'}>
         <NextLink href="/">Contact</NextLink>
         <Send />
       </Button>
